@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.wei-efrei.com/sitemap.xml
+w
