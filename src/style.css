@@ -224,6 +224,20 @@
   }
 }
 
+@keyframes icon-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(-6deg);
+  }
+}
+.icon-float {
+  animation: icon-float 2.6s ease-in-out infinite;
+  animation-delay: var(--float-delay, 0ms);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -235,5 +249,8 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+  .icon-float {
+    animation: none;
   }
 }
