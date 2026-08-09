@@ -94,8 +94,8 @@ const MARQUEE_WORDS = [
       </p>
 
       <div v-reveal="280" class="mt-9 flex flex-wrap items-center gap-4">
-        <a
-          href="#billetterie"
+        <RouterLink
+          to="/billetterie"
           class="group inline-flex items-center gap-2 rounded-full bg-wei-red px-7 py-3.5 text-base font-semibold text-white shadow-[0_0_40px_-8px_var(--wei-red)] transition-transform hover:scale-[1.03] active:scale-95"
         >
           Réserver ma place
@@ -103,7 +103,7 @@ const MARQUEE_WORDS = [
             :size="18"
             class="transition-transform group-hover:translate-x-1"
           />
-        </a>
+        </RouterLink>
         <RouterLink
           to="/weekend"
           class="inline-flex items-center gap-2 rounded-full border border-wei-red/40 px-7 py-3.5 text-base font-semibold text-wei-red transition-colors hover:bg-wei-red/5"
@@ -303,13 +303,13 @@ const MARQUEE_WORDS = [
         Les places sont limitées. Réserve la tienne dès maintenant et rejoins
         l'aventure.
       </p>
-      <a
-        href="mailto:bureau@wei-efrei.com?subject=Réservation%20WEI"
+      <RouterLink
+        to="/billetterie"
         class="mt-9 inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-base font-bold text-wei-red transition-transform hover:scale-[1.03] active:scale-95"
       >
         Réserver ma place
         <ArrowRight :size="18" />
-      </a>
+      </RouterLink>
       <p class="mt-5 text-sm font-medium text-white/80">
         Événement réservé aux étudiants majeurs (+18 ans).
       </p>

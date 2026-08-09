@@ -3,6 +3,7 @@
 Site vitrine du **Week-End d'Intégration (WEI) de l'Efrei**
 
 > **Site officiel :** https://www.wei-efrei.com/
+> **Dépôt Git :** https://github.com/cIementg/Wei-WebSite
 
 ## Pourquoi un site vitrine ?
 
@@ -13,13 +14,18 @@ avec un compte à rebours, et centraliser les liens utiles.
 
 ## Fonctionnalités
 
-- **Deux pages** : l'accueil (présentation + compte à rebours) et une page
-  dédiée au week-end (programme, vidéos, WEI Safe).
+- **Trois pages** : l'accueil (présentation + compte à rebours), une page
+  dédiée au week-end (programme, vidéos, WEI Safe), et la billetterie.
 - **Compte à rebours 100 % automatique** — les dates ne sont jamais saisies à la
   main. Le WEI tombe toujours le dernier week-end de septembre (départ le jeudi
   soir, retour le dimanche soir) : le composant calcule ces dates chaque année,
   affiche un message « en cours » pendant le week-end, puis repart tout seul sur
   l'édition suivante dès le mardi. Voir `src/components/CountdownTimer.vue`.
+- **Billetterie à thème annuel** — la page `Billetterie.vue` change entièrement
+  d'habillage graphique chaque année selon le thème de l'édition (cette
+  année « Weixcalibur »). Elle est volontairement isolée du reste du site
+  pour pouvoir être remplacée en bloc d'une année sur l'autre. Voir
+  `src/pages/README.md`.
 - **Responsive** et pensé mobile-first.
 
 ## Technologies
@@ -49,7 +55,8 @@ Pour la mise en ligne, `npm run build` génère le site optimisé dans `dist/`.
 ├─ vite.config.ts            Config Vite (alias @ → src)
 ├─ public/                   Fichiers servis tels quels
 │  ├─ images/                Photos, logo, visuels
-│  │  └─ footer/             Icônes des réseaux sociaux
+│  │  ├─ footer/             Icônes des réseaux sociaux
+│  │  └─ billetterie/        Thème annuel de la billetterie (voir son README)
 │  └─ fonts/                 Police Sora
 └─ src/
    ├─ main.ts                Point d'entrée : monte l'app + directive v-reveal
@@ -62,10 +69,13 @@ Pour la mise en ligne, `npm run build` génère le site optimisé dans `dist/`.
    │  ├─ CountdownTimer.vue  Compte à rebours automatique
    │  └─ MarqueeStrip.vue    Bandeau rouge défilant
    ├─ composables/
-   │  └─ reveal.ts           Directive v-reveal (apparition au scroll)
+   │  ├─ reveal.ts           Directive v-reveal (apparition au scroll)
+   │  └─ useWeiDates.ts      Calcul générique des dates du WEI (réutilisé)
    └─ pages/
+      ├─ README.md           Logique du thème annuel de la billetterie
       ├─ Home.vue            Accueil
       ├─ Weekend.vue         Le week-end (programme, vidéos, WEI Safe)
+      ├─ Billetterie.vue     Billetterie (thème annuel, voir README ci-dessus)
       └─ NotFound.vue        Page 404
 ```
 

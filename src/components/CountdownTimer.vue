@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from "vue";
+import { weiWindow } from "@/composables/useWeiDates";
 
 /*
  * Compte à rebours du WEI — 100 % automatique.
@@ -8,28 +9,8 @@ import { ref, computed, onMounted, onUnmounted } from "vue";
  * on part le JEUDI SOIR et on rentre le DIMANCHE SOIR.
  * Tout est recalculé à partir de la date du jour : une fois l'édition passée,
  * le compte à rebours bascule tout seul sur l'année suivante.
+ * (Logique de date partagée avec la page Billetterie via useWeiDates.)
  */
-
-// Horaires de départ / retour (format 24 h). À ajuster ici si besoin.
-const DEPART_HOUR = 19; // jeudi soir
-const RETOUR_HOUR = 20; // dimanche soir
-
-// Dernier dimanche de septembre de l'année donnée.
-// On part du 30 septembre puis on recule jusqu'au dimanche (getDay() === 0).
-function lastSundayOfSeptember(year: number): Date {
-  const d = new Date(year, 8, 30); // mois 8 = septembre
-  d.setDate(30 - d.getDay());
-  return d;
-}
-
-// Fenêtre du WEI (départ jeudi soir → retour dimanche soir) pour une année.
-// Le jeudi = 3 jours avant le dimanche de fin.
-function weiWindow(year: number) {
-  const sundayDate = lastSundayOfSeptember(year).getDate();
-  const start = new Date(year, 8, sundayDate - 3, DEPART_HOUR);
-  const end = new Date(year, 8, sundayDate, RETOUR_HOUR);
-  return { start, end };
-}
 
 const now = ref(Date.now());
 let timer: number | undefined;

@@ -56,7 +56,7 @@ const year = new Date().getFullYear();
               Le Week-End
             </RouterLink>
             <RouterLink
-              to="/#billetterie"
+              to="/billetterie"
               class="text-sm text-foreground/70 transition-colors hover:text-foreground"
             >
               Billetterie
@@ -91,6 +91,17 @@ const year = new Date().getFullYear();
       >
         <p class="text-xs text-foreground/40">
           © {{ year }} WEI Efrei. Tous droits réservés.
+          <span class="block md:inline">
+            Crédit photo : EPS
+            <a
+              href="https://efreipicturestudio.fr"
+              target="_blank"
+              rel="noreferrer"
+              class="underline hover:text-foreground/70"
+            >
+              efreipicturestudio.fr
+            </a>
+          </span>
         </p>
         <a
           href="https://www.efrei.fr/"

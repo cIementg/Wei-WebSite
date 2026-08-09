@@ -71,7 +71,7 @@ watch(open, (v) => {
           </a>
         </RouterLink>
         <RouterLink
-          to="/#billetterie"
+          to="/billetterie"
           class="ml-2 rounded-full bg-wei-red px-5 py-2 text-sm font-semibold text-white shadow-[0_0_24px_-4px_var(--wei-red)] transition-transform hover:scale-[1.03] active:scale-95"
         >
           Billetterie
@@ -120,7 +120,7 @@ watch(open, (v) => {
           </a>
         </RouterLink>
         <RouterLink
-          to="/#billetterie"
+          to="/billetterie"
           class="mt-2 rounded-xl bg-wei-red px-4 py-3 text-center text-base font-semibold text-white"
           @click="open = false"
         >

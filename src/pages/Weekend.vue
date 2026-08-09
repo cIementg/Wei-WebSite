@@ -327,7 +327,7 @@ const REEL = "DPV3p1ok7hN";
         année.
       </p>
       <RouterLink
-        to="/#billetterie"
+        to="/billetterie"
         class="group mt-9 inline-flex items-center gap-2 rounded-full bg-wei-red px-8 py-4 text-base font-bold text-white shadow-[0_0_40px_-8px_var(--wei-red)] transition-transform hover:scale-[1.03] active:scale-95"
       >
         Réserver ma place
