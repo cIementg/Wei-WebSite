@@ -9,6 +9,8 @@ import { ref, computed } from "vue";
 import {
   ArrowRight,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Ticket,
   Bus,
   Home as HomeIcon,
@@ -43,37 +45,78 @@ const TICKETS = [
     label: "Prévente",
     tag: "Prévente",
     tagClass: "bg-amber-400 text-amber-950",
-    price: 187,
-    period: "Du 10 au 31 août",
+    price: 186,
+    period: "Dès le 10 août, jusqu'à épuisement",
     available: isPreventeAvailable,
     highlight: true,
+    perks: [
+      { icon: HomeIcon, label: "Zone de bungalow au choix" },
+      { icon: Bus, label: "Bus au choix" },
+    ],
   },
   {
     key: "classique",
     label: "Tarif classique",
     tag: "Classique",
     tagClass: "bg-emerald-400 text-emerald-950",
-    price: 200,
-    period: "Du 1ᵉʳ au 21 septembre",
+    price: 186,
+    period: "Dès le 1ᵉʳ septembre, jusqu'à épuisement",
     available: isClassiqueAvailable,
     highlight: false,
+    perks: [],
+  },
+  {
+    key: "alumni-prevente",
+    label: "Alumni · Prévente",
+    tag: "Alumni Prévente",
+    tagClass: "bg-sky-400 text-sky-950",
+    price: 200,
+    period: "Dès le 10 août, jusqu'à épuisement",
+    available: isPreventeAvailable,
+    highlight: false,
+    perks: [{ icon: HomeIcon, label: "Zone de bungalow au choix" }],
+  },
+  {
+    key: "alumni-classique",
+    label: "Alumni · Classique",
+    tag: "Alumni Efrei",
+    tagClass: "bg-sky-400 text-sky-950",
+    price: 200,
+    period: "Dès le 1ᵉʳ septembre, jusqu'à épuisement",
+    available: isClassiqueAvailable,
+    highlight: false,
+    perks: [],
   },
 ];
 
-const selected = ref<"prevente" | "classique">(
-  isPreventeAvailable.value ? "prevente" : "classique",
-);
-const price = computed(
-  () => TICKETS.find((t) => t.key === selected.value)?.price ?? 200,
-);
-
+const price = computed(() => {
+  const standard = TICKETS.find(
+    (t) => !t.key.startsWith("alumni") && t.available.value,
+  );
+  return standard ? standard.price : TICKETS[0].price;
+});
 
 function onTicketClick(ticket: (typeof TICKETS)[number], event: MouseEvent) {
   if (!ticket.available.value) {
     event.preventDefault();
-    return;
   }
-  selected.value = ticket.key as typeof selected.value;
+}
+
+// -------------------------------------------------------- Carrousel billets
+const TICKET_PAGE_SIZE = 2;
+const ticketPageCount = Math.ceil(TICKETS.length / TICKET_PAGE_SIZE);
+const ticketPage = ref(0);
+const ticketPageItems = computed(() =>
+  TICKETS.slice(
+    ticketPage.value * TICKET_PAGE_SIZE,
+    ticketPage.value * TICKET_PAGE_SIZE + TICKET_PAGE_SIZE,
+  ),
+);
+function prevTicketPage() {
+  ticketPage.value = (ticketPage.value - 1 + ticketPageCount) % ticketPageCount;
+}
+function nextTicketPage() {
+  ticketPage.value = (ticketPage.value + 1) % ticketPageCount;
 }
 
 const INCLUS = [
@@ -125,7 +168,7 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
   return {
     backgroundImage: `url(${c.src})`,
     backgroundRepeat: "repeat",
-    backgroundSize: `${c.w}px ${c.h}px`,
+    backgroundSize: `${c.w * 0.55}px ${c.h * 0.55}px`,
   };
 }
 </script>
@@ -199,7 +242,7 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
   <!-- --------------------------------------------------------- TICKETS -->
   <section id="tarifs" class="relative mx-auto max-w-7xl px-5 py-20 md:px-8">
     <div
-      class="pointer-events-none absolute inset-0 overflow-hidden opacity-80"
+      class="pointer-events-none absolute inset-0 overflow-hidden opacity-100"
       :style="confettiStyle(CONFETTI.a)"
     />
     <img
@@ -228,85 +271,125 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
       </h2>
     </div>
 
-    <div class="mx-auto mt-14 grid max-w-6xl gap-6 lg:grid-cols-2">
-      <a
-        v-for="(ticket, i) in TICKETS"
-        :key="ticket.key"
-        v-reveal="i * 100"
-        :href="ticket.available.value ? GLYPS_URL : undefined"
-        :target="ticket.available.value ? '_blank' : undefined"
-        rel="noopener"
-        :aria-disabled="!ticket.available.value"
-        :class="[
-          'group relative flex overflow-hidden rounded-2xl border border-black/5 bg-card text-left shadow-lg transition-all',
-          selected === ticket.key ? 'ring-2 ring-wei-red ring-offset-2' : '',
-          ticket.available.value
-            ? 'cursor-pointer hover:-translate-y-1 hover:shadow-2xl'
-            : 'cursor-not-allowed opacity-60 grayscale',
-        ]"
-        @click="onTicketClick(ticket, $event)"
+    <div v-reveal class="relative mx-auto mt-14 max-w-3xl" style="overflow-anchor: none">
+      <button
+        type="button"
+        aria-label="Tarifs précédents"
+        class="absolute top-1/2 -left-3 z-10 grid size-10 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-card text-foreground shadow-lg transition-transform hover:scale-110 sm:-left-5"
+        @click="prevTicketPage"
       >
-        <!-- Corps du billet -->
-        <div
-          class="relative flex flex-1 flex-col justify-center gap-3 p-5 text-white sm:p-6"
+        <ChevronLeft :size="20" />
+      </button>
+      <button
+        type="button"
+        aria-label="Tarifs suivants"
+        class="absolute top-1/2 -right-3 z-10 grid size-10 -translate-y-1/2 translate-x-1/2 place-items-center rounded-full bg-card text-foreground shadow-lg transition-transform hover:scale-110 sm:-right-5"
+        @click="nextTicketPage"
+      >
+        <ChevronRight :size="20" />
+      </button>
+
+      <Transition name="ticket-fade">
+        <div :key="ticketPage" class="grid gap-5 sm:grid-cols-2">
+          <a
+            v-for="t in ticketPageItems"
+            :key="t.key"
+            :href="t.available.value ? GLYPS_URL : undefined"
+            :target="t.available.value ? '_blank' : undefined"
+            rel="noopener"
+            :aria-disabled="!t.available.value"
+            :class="[
+              'group relative flex flex-col overflow-hidden rounded-2xl border border-black/5 bg-card text-left shadow-lg transition-all',
+              t.available.value
+                ? 'cursor-pointer hover:-translate-y-1 hover:shadow-2xl'
+                : 'cursor-not-allowed opacity-60 grayscale',
+            ]"
+            @click="onTicketClick(t, $event)"
+          >
+            <!-- Corps du billet -->
+            <div
+              class="relative flex h-[197px] flex-col justify-center gap-3 p-5 text-white sm:h-[213px] sm:p-6"
+              :class="
+                t.highlight
+                  ? 'bg-gradient-to-br from-wei-red-dark via-wei-red to-wei-red-bright'
+                  : 'bg-gradient-to-br from-wei-red/75 via-wei-red/60 to-wei-red-bright/55'
+              "
+            >
+              <div class="flex items-center gap-3">
+                <img
+                  src="/images/billetterie/logo.png"
+                  alt=""
+                  class="size-11 shrink-0 rounded-full object-cover ring-2 ring-white/40"
+                />
+                <span class="rounded-full bg-white px-3.5 py-1.5 text-[0.7rem] font-semibold uppercase tracking-widest text-wei-red">
+                  Week-end d'intégration
+                </span>
+              </div>
+
+              <div class="flex items-baseline gap-2">
+                <span class="font-display text-3xl leading-none sm:text-4xl">{{ daysLabel }}</span>
+                <span class="text-xs font-semibold uppercase tracking-widest text-white/70">{{ monthLabel }}</span>
+              </div>
+
+              <div v-if="t.perks.length" class="flex flex-wrap gap-2">
+                <span
+                  v-for="perk in t.perks"
+                  :key="perk.label"
+                  class="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium"
+                >
+                  <component :is="perk.icon" :size="14" class="shrink-0" /> {{ perk.label }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Billet -->
+            <div class="relative flex items-center gap-4 border-t-2 border-dashed border-black/10 bg-card p-4 text-foreground sm:p-5">
+              <span class="absolute -top-3 -left-3 size-6 rounded-full bg-background" />
+              <span class="absolute -top-3 -right-3 size-6 rounded-full bg-background" />
+              <span
+                class="absolute left-4 -top-2.5 rounded-full px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-widest"
+                :class="t.tagClass"
+              >
+                {{ t.tag }}
+              </span>
+              <img :src="QR_URL" alt="QR billetterie" class="size-14 shrink-0 rounded-lg bg-white p-1 sm:size-16" />
+              <div class="flex flex-1 flex-col gap-0.5">
+                <div class="flex items-baseline gap-1.5">
+                  <span class="font-display text-xl text-wei-red">{{ t.price }}€</span>
+                  <span class="text-[0.6rem] text-foreground/40">+ 1,80€ de frais de dépôt (caution 200€)</span>
+                </div>
+                <span
+                  class="text-[0.65rem] font-semibold uppercase tracking-widest"
+                  :class="t.available.value ? 'text-wei-red' : 'text-foreground/40'"
+                >
+                  {{ t.available.value ? "Disponible" : "Pas encore ouvert" }}
+                </span>
+                <span class="text-[0.65rem] text-foreground/40">{{ t.period }}</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </Transition>
+
+      <div class="mt-6 flex justify-center gap-2">
+        <button
+          v-for="p in ticketPageCount"
+          :key="p"
+          type="button"
+          :aria-label="`Voir la page de tarifs ${p}`"
+          class="h-2 rounded-full transition-all"
           :class="
-            ticket.highlight
-              ? 'bg-gradient-to-br from-wei-red-dark via-wei-red to-wei-red-bright'
-              : 'bg-gradient-to-br from-wei-red/75 via-wei-red/60 to-wei-red-bright/55'
+            p - 1 === ticketPage
+              ? 'w-6 bg-wei-red'
+              : 'w-2 bg-foreground/20 hover:bg-foreground/40'
           "
-        >
-          <div class="flex items-center gap-3">
-            <img
-              src="/images/billetterie/logo.png"
-              alt=""
-              class="size-11 shrink-0 rounded-full object-cover ring-2 ring-white/40"
-            />
-            <span class="rounded-full bg-white px-3.5 py-1.5 text-[0.7rem] font-semibold uppercase tracking-widest text-wei-red">
-              Week-end d'intégration
-            </span>
-          </div>
-
-          <div class="flex items-baseline gap-2">
-            <span class="font-display text-3xl leading-none sm:text-4xl">{{ daysLabel }}</span>
-            <span class="text-xs font-semibold uppercase tracking-widest text-white/70">{{ monthLabel }}</span>
-          </div>
-
-          <div v-if="ticket.highlight" class="flex flex-wrap gap-2">
-            <span class="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium">
-              <HomeIcon :size="14" class="shrink-0" /> Zone de bungalow au choix
-            </span>
-            <span class="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium">
-              <Bus :size="14" class="shrink-0" /> Bus au choix
-            </span>
-          </div>
-        </div>
-
-        <!-- Souche du billet -->
-        <div class="relative flex w-32 shrink-0 flex-col items-center justify-center gap-1.5 border-l-2 border-dashed border-black/10 bg-card p-4 text-foreground sm:w-36">
-          <!-- Encoches qui donnent l'effet billet déchiré -->
-          <span class="absolute -left-3 -top-3 size-6 rounded-full bg-background" />
-          <span class="absolute -bottom-3 -left-3 size-6 rounded-full bg-background" />
-          <span
-            class="absolute left-2 top-2 rounded-full px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-widest"
-            :class="ticket.tagClass"
-          >
-            {{ ticket.tag }}
-          </span>
-          <img :src="QR_URL" alt="QR billetterie" class="mt-5 size-16 rounded-lg bg-white p-1 sm:size-20" />
-          <span class="font-display text-xl text-wei-red">{{ ticket.price }}€</span>
-          <span
-            class="text-center text-[0.65rem] font-semibold uppercase tracking-widest"
-            :class="ticket.available.value ? 'text-wei-red' : 'text-foreground/40'"
-          >
-            {{ ticket.available.value ? "Disponible" : "Pas encore ouvert" }}
-          </span>
-          <span class="text-center text-[0.65rem] text-foreground/40">{{ ticket.period }}</span>
-        </div>
-      </a>
+          @click="ticketPage = p - 1"
+        />
+      </div>
     </div>
 
     <p class="mx-auto mt-10 max-w-xl text-center text-sm text-muted-foreground">
-      Boursier·ère ? Bénéficie de 47€ de réduction — écris-nous à
+      Boursier·ère ? Bénéficie de 47€ de réduction, écris-nous à
       <a href="mailto:bureau@wei-efrei.com" class="text-wei-red underline">
         bureau@wei-efrei.com
       </a>
@@ -317,7 +400,7 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
   <!-- ------------------------------------------------------------ RECAP -->
   <section class="relative mx-auto max-w-6xl px-5 pt-4 pb-20 md:px-8">
     <div
-      class="pointer-events-none absolute inset-0 overflow-hidden opacity-80"
+      class="pointer-events-none absolute inset-0 overflow-hidden opacity-100"
       :style="confettiStyle(CONFETTI.b)"
     />
     <img
@@ -382,7 +465,7 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
   <!-- ---------------------------------------------------------- INCLUS -->
   <section class="relative mx-auto max-w-7xl px-5 py-20 md:px-8">
     <div
-      class="pointer-events-none absolute inset-0 overflow-hidden opacity-80"
+      class="pointer-events-none absolute inset-0 overflow-hidden opacity-100"
       :style="confettiStyle(CONFETTI.wide)"
     />
 
@@ -429,7 +512,7 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
   <!-- ------------------------------------------------------------- CTA -->
   <section class="relative mx-auto max-w-7xl px-5 pt-8 md:px-8">
     <div
-      class="pointer-events-none absolute inset-0 overflow-hidden opacity-80"
+      class="pointer-events-none absolute inset-0 overflow-hidden opacity-100"
       :style="confettiStyle(CONFETTI.a)"
     />
 
@@ -458,6 +541,7 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
         <h2 class="mt-4 font-display text-4xl text-white md:text-6xl">
           {{ price }}€ — c'est parti&nbsp;!
         </h2>
+        <p class="mt-2 text-sm text-white/70">+ 1,80€ de frais de dépôt (caution 200€)</p>
         <p class="mx-auto mt-5 max-w-xl text-lg text-white/90">
           Les places sont limitées. Réserve la tienne dès maintenant sur la
           billetterie officielle Glyps.
@@ -477,7 +561,7 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
       </div>
     </div>
 
-    <div class="relative -mx-5 flex items-end justify-center overflow-hidden md:-mx-8">
+    <div class="relative -mx-5 flex h-28 items-end justify-center overflow-hidden md:-mx-8 md:h-40 lg:h-56">
       <img
         :src="VILLAGE_1"
         alt=""
@@ -488,12 +572,37 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
         alt=""
         class="pointer-events-none absolute bottom-0 right-[6%] hidden w-40 select-none opacity-70 md:block lg:w-52"
       />
-      <img
-        v-reveal
-        :src="MASCOT_CHEV"
-        alt=""
-        class="relative w-28 select-none sm:w-32 lg:w-40"
-      />
+      <div class="relative h-20 w-28 overflow-hidden sm:h-24 sm:w-32 lg:h-28 lg:w-40">
+        <img
+          v-reveal
+          :src="MASCOT_CHEV"
+          alt=""
+          class="absolute inset-x-0 top-0 w-full select-none"
+        />
+      </div>
     </div>
   </section>
 </template>
+
+<style scoped>
+.ticket-fade-enter-active,
+.ticket-fade-leave-active {
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+.ticket-fade-enter-from {
+  opacity: 0;
+  transform: translateX(16px);
+}
+.ticket-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-16px);
+}
+.ticket-fade-leave-active {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+</style>
