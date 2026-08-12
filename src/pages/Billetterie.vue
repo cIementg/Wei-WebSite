@@ -357,7 +357,7 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
                 <div class="flex items-baseline gap-1.5">
                   <span class="font-display text-xl text-wei-red">{{ t.price }}€</span>
                 </div>
-                <span class="text-[0.6rem] text-foreground/40">+ 1,80€ de frais de dépôt (caution 200€)</span>
+                <span class="text-[0.6rem] text-foreground/40">+ 1,80€ de frais de dépôt (caution 100€)</span>
                 <span
                   class="text-[0.65rem] font-semibold uppercase tracking-widest"
                   :class="t.available.value ? 'text-wei-red' : 'text-foreground/40'"
@@ -541,7 +541,7 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
         <h2 class="mt-4 font-display text-4xl text-white md:text-6xl">
           {{ price }}€ — c'est parti&nbsp;!
         </h2>
-        <p class="mt-2 text-sm text-white/70">+ 1,80€ de frais de dépôt (caution 200€)</p>
+        <p class="mt-2 text-sm text-white/70">+ 1,80€ de frais de dépôt (caution 100€)</p>
         <p class="mx-auto mt-5 max-w-xl text-lg text-white/90">
           Les places sont limitées. Réserve la tienne dès maintenant sur la
           billetterie officielle Glyps.
