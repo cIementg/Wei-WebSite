@@ -91,6 +91,7 @@ const year = new Date().getFullYear();
       >
         <p class="text-xs text-foreground/40">
           © {{ year }} WEI Efrei. Tous droits réservés.
+          <br>
           <span class="block md:inline">
             Crédit photo : EPS
             <a
