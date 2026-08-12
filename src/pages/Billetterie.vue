@@ -20,7 +20,7 @@ import {
 } from "lucide-vue-next";
 import { nextWeiWindow, formatWeiDateRange } from "@/composables/useWeiDates";
 
-const GLYPS_URL = "https://efrei.glyps.fr";
+const GLYPS_URL = "https://efrei.glyps.fr/weixcalibur/weixcalibur";
 const QR_URL = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=8&data=${encodeURIComponent(GLYPS_URL)}`;
 
 // -------------------------------------------------------------- Dates
@@ -356,7 +356,7 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
               <div class="flex flex-1 flex-col gap-0.5">
                 <div class="flex items-baseline gap-1.5">
                   <span class="font-display text-xl text-wei-red">{{ t.price }}€</span>
-                  <span class="text-[0.6rem] text-foreground/40">+ 1,80€ de frais de dépôt (caution 200€)</span>
+                  <span class="text-[0.6rem] text-foreground/40">+ 1,80€ de frais de dépôt (caution 100€)</span>
                 </div>
                 <span
                   class="text-[0.65rem] font-semibold uppercase tracking-widest"
@@ -390,8 +390,8 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
 
     <p class="mx-auto mt-10 max-w-xl text-center text-sm text-muted-foreground">
       Boursier·ère ? Bénéficie de 47€ de réduction, écris-nous à
-      <a href="mailto:bureau@wei-efrei.com" class="text-wei-red underline">
-        bureau@wei-efrei.com
+      <a href="mailto:contact@wei-efrei.com" class="text-wei-red underline">
+        contact@wei-efrei.com
       </a>
       pour en profiter.
     </p>
@@ -541,7 +541,7 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
         <h2 class="mt-4 font-display text-4xl text-white md:text-6xl">
           {{ price }}€ — c'est parti&nbsp;!
         </h2>
-        <p class="mt-2 text-sm text-white/70">+ 1,80€ de frais de dépôt (caution 200€)</p>
+        <p class="mt-2 text-sm text-white/70">+ 1,80€ de frais de dépôt (caution 100€)</p>
         <p class="mx-auto mt-5 max-w-xl text-lg text-white/90">
           Les places sont limitées. Réserve la tienne dès maintenant sur la
           billetterie officielle Glyps.

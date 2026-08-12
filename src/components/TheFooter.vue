@@ -3,7 +3,7 @@ const SOCIALS = [
   { href: "https://www.instagram.com/weiefrei", icon: "/images/footer/instagram.svg", label: "Instagram" },
   { href: "https://discord.gg/hem6YyjA9m", icon: "/images/footer/discord.svg", label: "Discord" },
   { href: "https://www.linkedin.com/company/wei-efrei/", icon: "/images/footer/linkedin.svg", label: "LinkedIn" },
-  { href: "mailto:bureau@wei-efrei.com", icon: "/images/footer/mail.svg", label: "Email" },
+  { href: "mailto:contact@wei-efrei.com", icon: "/images/footer/mail.svg", label: "Email" },
 ];
 
 const year = new Date().getFullYear();
