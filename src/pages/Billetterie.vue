@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Ticket,
+  Sparkles,
   Bus,
   Home as HomeIcon,
   UtensilsCrossed,
@@ -240,7 +241,7 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
   </section>
 
   <!-- --------------------------------------------------------- TICKETS -->
-  <section id="tarifs" class="relative mx-auto max-w-7xl px-5 py-20 md:px-8">
+  <section id="tarifs" class="relative mx-auto max-w-7xl px-5 pt-20 pb-10 md:px-8">
     <div
       class="pointer-events-none absolute inset-0 overflow-hidden opacity-100"
       :style="confettiStyle(CONFETTI.a)"
@@ -388,13 +389,23 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
       </div>
     </div>
 
-    <p class="mx-auto mt-10 max-w-xl text-center text-sm text-muted-foreground">
-      Boursier·ère ? Bénéficie de 47€ de réduction, écris-nous à
-      <a href="mailto:contact@wei-efrei.com" class="text-wei-red underline">
-        contact@wei-efrei.com
-      </a>
-      pour en profiter.
-    </p>
+    <div
+      v-reveal
+      class="relative mx-auto mt-6 max-w-md rounded-2xl border border-wei-red/15 bg-white/95 px-5 py-3.5 text-center shadow-md shadow-wei-red/5 backdrop-blur-sm"
+    >
+      <p class="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground">
+        <Sparkles :size="15" class="text-wei-red" />
+        Boursier·ère ? Bénéficie de 47€ de réduction
+      </p>
+      <p class="mx-auto mt-1 max-w-sm text-xs leading-relaxed text-muted-foreground">
+        Écris-nous <strong class="text-foreground">avant d'acheter ton billet</strong> à
+        <a href="mailto:contact@wei-efrei.com" class="text-wei-red underline">
+          contact@wei-efrei.com
+        </a>
+        pour en faire la demande : la réduction ne peut pas être appliquée après
+        l'achat.
+      </p>
+    </div>
   </section>
 
   <!-- ------------------------------------------------------------ RECAP -->

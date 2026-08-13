@@ -90,7 +90,10 @@ const year = new Date().getFullYear();
         class="mt-14 flex flex-col items-center justify-between gap-6 border-t border-black/10 pt-8 md:flex-row"
       >
         <p class="text-xs text-foreground/40">
-          © {{ year }} WEI Efrei. Tous droits réservés.
+          © {{ year }} WEI Efrei. Tous droits réservés. ·
+          <RouterLink to="/mentions-legales" class="underline hover:text-foreground/70">
+            Mentions légales
+          </RouterLink>
           <br>
           <span class="block md:inline">
             Crédit photo : EPS
