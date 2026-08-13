@@ -3,7 +3,7 @@ const SOCIALS = [
   { href: "https://www.instagram.com/weiefrei", icon: "/images/footer/instagram.svg", label: "Instagram" },
   { href: "https://discord.gg/hem6YyjA9m", icon: "/images/footer/discord.svg", label: "Discord" },
   { href: "https://www.linkedin.com/company/wei-efrei/", icon: "/images/footer/linkedin.svg", label: "LinkedIn" },
-  { href: "mailto:bureau@wei-efrei.com", icon: "/images/footer/mail.svg", label: "Email" },
+  { href: "mailto:contact@wei-efrei.com", icon: "/images/footer/mail.svg", label: "Email" },
 ];
 
 const year = new Date().getFullYear();
@@ -90,7 +90,11 @@ const year = new Date().getFullYear();
         class="mt-14 flex flex-col items-center justify-between gap-6 border-t border-black/10 pt-8 md:flex-row"
       >
         <p class="text-xs text-foreground/40">
-          © {{ year }} WEI Efrei. Tous droits réservés.
+          © {{ year }} WEI Efrei. Tous droits réservés. ·
+          <RouterLink to="/mentions-legales" class="underline hover:text-foreground/70">
+            Mentions légales
+          </RouterLink>
+          <br>
           <span class="block md:inline">
             Crédit photo : EPS
             <a

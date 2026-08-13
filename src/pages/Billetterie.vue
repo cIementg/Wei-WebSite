@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Ticket,
+  Sparkles,
   Bus,
   Home as HomeIcon,
   UtensilsCrossed,
@@ -20,7 +21,7 @@ import {
 } from "lucide-vue-next";
 import { nextWeiWindow, formatWeiDateRange } from "@/composables/useWeiDates";
 
-const GLYPS_URL = "https://efrei.glyps.fr";
+const GLYPS_URL = "https://efrei.glyps.fr/weixcalibur/weixcalibur";
 const QR_URL = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=8&data=${encodeURIComponent(GLYPS_URL)}`;
 
 // -------------------------------------------------------------- Dates
@@ -240,7 +241,7 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
   </section>
 
   <!-- --------------------------------------------------------- TICKETS -->
-  <section id="tarifs" class="relative mx-auto max-w-7xl px-5 py-20 md:px-8">
+  <section id="tarifs" class="relative mx-auto max-w-7xl px-5 pt-20 pb-10 md:px-8">
     <div
       class="pointer-events-none absolute inset-0 overflow-hidden opacity-100"
       :style="confettiStyle(CONFETTI.a)"
@@ -356,8 +357,8 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
               <div class="flex flex-1 flex-col gap-0.5">
                 <div class="flex items-baseline gap-1.5">
                   <span class="font-display text-xl text-wei-red">{{ t.price }}€</span>
-                  <span class="text-[0.6rem] text-foreground/40">+ 1,80€ de frais de dépôt (caution 200€)</span>
                 </div>
+                <span class="text-[0.6rem] text-foreground/40">+ 1,80€ de frais de dépôt (caution 100€)</span>
                 <span
                   class="text-[0.65rem] font-semibold uppercase tracking-widest"
                   :class="t.available.value ? 'text-wei-red' : 'text-foreground/40'"
@@ -388,13 +389,23 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
       </div>
     </div>
 
-    <p class="mx-auto mt-10 max-w-xl text-center text-sm text-muted-foreground">
-      Boursier·ère ? Bénéficie de 47€ de réduction, écris-nous à
-      <a href="mailto:bureau@wei-efrei.com" class="text-wei-red underline">
-        bureau@wei-efrei.com
-      </a>
-      pour en profiter.
-    </p>
+    <div
+      v-reveal
+      class="relative mx-auto mt-6 max-w-md rounded-2xl border border-wei-red/15 bg-white/95 px-5 py-3.5 text-center shadow-md shadow-wei-red/5 backdrop-blur-sm"
+    >
+      <p class="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground">
+        <Sparkles :size="15" class="text-wei-red" />
+        Boursier·ère ? Bénéficie de 47€ de réduction
+      </p>
+      <p class="mx-auto mt-1 max-w-sm text-xs leading-relaxed text-muted-foreground">
+        Écris-nous <strong class="text-foreground">avant d'acheter ton billet</strong> à
+        <a href="mailto:contact@wei-efrei.com" class="text-wei-red underline">
+          contact@wei-efrei.com
+        </a>
+        pour en faire la demande : la réduction ne peut pas être appliquée après
+        l'achat.
+      </p>
+    </div>
   </section>
 
   <!-- ------------------------------------------------------------ RECAP -->
@@ -541,7 +552,7 @@ function confettiStyle(c: (typeof CONFETTI)[keyof typeof CONFETTI]) {
         <h2 class="mt-4 font-display text-4xl text-white md:text-6xl">
           {{ price }}€ — c'est parti&nbsp;!
         </h2>
-        <p class="mt-2 text-sm text-white/70">+ 1,80€ de frais de dépôt (caution 200€)</p>
+        <p class="mt-2 text-sm text-white/70">+ 1,80€ de frais de dépôt (caution 100€)</p>
         <p class="mx-auto mt-5 max-w-xl text-lg text-white/90">
           Les places sont limitées. Réserve la tienne dès maintenant sur la
           billetterie officielle Glyps.
