@@ -14,8 +14,9 @@ avec un compte à rebours, et centraliser les liens utiles.
 
 ## Fonctionnalités
 
-- **Trois pages** : l'accueil (présentation + compte à rebours), une page
-  dédiée au week-end (programme, vidéos, WEI Safe), et la billetterie.
+- **Quatre pages** : l'accueil (présentation + compte à rebours), une page
+  dédiée au week-end (programme, vidéos, WEI Safe), la billetterie et les
+  mentions légales.
 - **Compte à rebours 100 % automatique** — les dates ne sont jamais saisies à la
   main. Le WEI tombe toujours le dernier week-end de septembre (départ le jeudi
   soir, retour le dimanche soir) : le composant calcule ces dates chaque année,
@@ -54,6 +55,7 @@ Pour la mise en ligne, `npm run build` génère le site optimisé dans `dist/`.
 ├─ index.html                Page hôte + SEO (Open Graph, schema.org)
 ├─ vite.config.ts            Config Vite (alias @ → src)
 ├─ public/                   Fichiers servis tels quels
+│  ├─ sitemap.xml            Plan du site pour le référencement
 │  ├─ images/                Photos, logo, visuels
 │  │  ├─ footer/             Icônes des réseaux sociaux
 │  │  └─ billetterie/        Thème annuel de la billetterie (voir son README)
@@ -76,6 +78,7 @@ Pour la mise en ligne, `npm run build` génère le site optimisé dans `dist/`.
       ├─ Home.vue            Accueil
       ├─ Weekend.vue         Le week-end (programme, vidéos, WEI Safe)
       ├─ Billetterie.vue     Billetterie (thème annuel, voir README ci-dessus)
+      ├─ MentionsLegales.vue Mentions légales
       └─ NotFound.vue        Page 404
 ```
 
